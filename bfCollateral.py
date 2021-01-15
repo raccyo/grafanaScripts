@@ -16,7 +16,7 @@ if __name__ == '__main__':
     while True:
         try:
           bf_collateral = api.getcollateral()['collateral']
-          data = [{'bf_collateral':bf_collateral}]
+          data = [{"measurement": "bf_collateral", "fields": {'bf_collateral': int(bf_collateral)}}]
           client.write_points(data)
         except:
           pass

@@ -15,7 +15,8 @@ if __name__ == '__main__':
     client = InfluxDBClient(host='localhost', port=8086, database='bots')
     while True:
         try:
-          bf_collateral = api.getcollateral()['collateral']
+          res = api.getcollateral()
+          bf_collateral = float(res['collateral']) + float(res['open_position_pnl'])
           data = [{"measurement": "bf_collateral", "fields": {'bf_collateral': int(bf_collateral)}}]
           client.write_points(data)
         except:

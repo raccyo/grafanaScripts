@@ -52,6 +52,7 @@ if __name__ == '__main__':
     ws_btc_jpy = Websocketexecutions(channel="lightning_executions_BTC_JPY")
     ws_btc_jpy.startWebsocket()
     ws_eth_jpy = Websocketexecutions(channel="lightning_executions_ETH_JPY")
+    ws_eth_jpy.startWebsocket()
     f=open('key.yaml','r+')
     data = yaml.load(f, Loader=yaml.FullLoader)
     key=data['bf_key']
@@ -71,7 +72,6 @@ if __name__ == '__main__':
               bf_jpy = a['amount']
           bf_btc_jpy = bf_btc * ws_btc_jpy.ltp
           bf_eth_jpy = bf_eth * ws_eth_jpy.ltp
-          print(bf_jpy, bf_btc_jpy, bf_eth_jpy)
           bf_jpy += bf_btc_jpy + bf_eth_jpy
           data = [{"measurement": "bf_SpotCollateral", "fields": {'bf_SpotCollateral': int(bf_jpy)}}]
           client.write_points(data)

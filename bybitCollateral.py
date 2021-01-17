@@ -6,7 +6,8 @@ import yaml
 from influxdb import InfluxDBClient
 import ccxt
 import requests
-
+symbols = [{'symbol': 'BTCUSD', 'crypt': 'BTC', 'slash': 'BTC/USD'},
+           {'symbol': 'ETHUSD', 'crypt': 'ETH', 'slash': 'ETH/USD'}]
 if __name__ == '__main__':
     f=open('key.yaml','r+')
     data = yaml.load(f, Loader=yaml.FullLoader)
@@ -19,11 +20,13 @@ if __name__ == '__main__':
     while True:
         try:
           res = bybit.fetch_balance()
-          pos = bybit.privateGetPositionList({'symbol': 'BTCUSD'})
-          balance_btc = float(res['BTC']['free']) + float(res['BTC']
+          balance_usd = 0
+          for symbol in symbols:
+            pos = bybit.privateGetPositionList({'symbol': symbol['symbol']})
+            balance = float(res[symbol['crypt']]['free']) + float(res[symbol['crypt']]
                                                           ['used']) + float(pos['result']['unrealised_pnl'])
-          last = bybit.fetch_ticker('BTC/USD')['last']
-          balance_usd = balance_btc*last
+            last = bybit.fetch_ticker(symbol['slash'])['last']
+            balance_usd += balance*last
           res = requests.get(url="https://api.exchangeratesapi.io/latest").json()
           usd_jpy = res['rates']['JPY']/res['rates']['USD']
           balance_jpy = balance_usd * usd_jpy
@@ -31,5 +34,7 @@ if __name__ == '__main__':
               'bybit_collateral': int(balance_jpy)}}]
           client.write_points(data)
         except:
+          import traceback
+          traceback.print_exc()
           pass
         time.sleep(60)

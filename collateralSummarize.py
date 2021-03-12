@@ -7,7 +7,8 @@ MEASUREMENTS = [
     'bf_collateral',
     'bf_SpotCollateral',
     'bybit_collateral',
-    'gmo_collateral'
+    'gmo_collateral',
+    'gmo_erica_collateral'
 ]
 
 

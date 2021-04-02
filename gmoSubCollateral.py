@@ -45,14 +45,13 @@ if __name__ == '__main__':
     data = yaml.load(f, Loader=yaml.FullLoader)
     key = data['gmo_sub_key']
     secret = data['gmo_sub_secret']
-    # client = InfluxDBClient(host='localhost', port=8086, database='bots')
+    client = InfluxDBClient(host='localhost', port=8086, database='bots')
     while True:
         try:
             margin = get_margin()['data']['actualProfitLoss']
-            print(margin)
-            # data = [{"measurement": "gmo_sub_collateral", "fields": {
-            #     'gmo_sub_collateral': int(margin)}}]
-            # client.write_points(data)
+            data = [{"measurement": "gmo_sub_collateral", "fields": {
+                'gmo_sub_collateral': int(margin)}}]
+            client.write_points(data)
         except:
             import traceback
             traceback.print_exc()

@@ -40,8 +40,11 @@ if __name__ == '__main__':
                 url="https://www.gaitameonline.com/rateaj/getrate").json()
             usd_jpy = getMid('USDJPY', res['quotes'])
             balance_jpy = balance_usd * usd_jpy
-            data = [{"measurement": "bybit_collateral", "fields": {
-                'bybit_collateral': int(balance_jpy)}}]
+            data = [{"measurement": "bybit_collateral", 
+            "fields": {
+                'bybit_collateral': int(balance_jpy),
+                'bybit_btc': float(balance)
+                }}]
             client.write_points(data)
         except BaseException:
             import traceback

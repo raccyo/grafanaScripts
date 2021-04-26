@@ -36,14 +36,15 @@ if __name__ == '__main__':
                     res[symbol['crypt']]['used']) + float(pos['result']['unrealised_pnl'])
                 last = bybit.fetch_ticker(symbol['slash'])['last']
                 balance_usd += balance * last
-            res = requests.get(
+            print(res['total']['BTC'])
+            trade = requests.get(
                 url="https://www.gaitameonline.com/rateaj/getrate").json()
-            usd_jpy = getMid('USDJPY', res['quotes'])
+            usd_jpy = getMid('USDJPY', trade['quotes'])
             balance_jpy = balance_usd * usd_jpy
             data = [{"measurement": "bybit_collateral", 
             "fields": {
                 'bybit_collateral': int(balance_jpy),
-                'bybit_btc': float(balance)
+                'bybit_btc': float(res['total']['BTC'])
                 }}]
             client.write_points(data)
         except BaseException:

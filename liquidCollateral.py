@@ -19,7 +19,7 @@ if __name__ == '__main__':
         try:
             margin = liquid.get_trading_accounts()[0]['equity']
             data = [{'measurement':"liquid_collateral", "fields":{
-                "liquid_collateral": int(margin)
+                "liquid_collateral": float(margin)
             }}]
             client.write_points(data)
         except:

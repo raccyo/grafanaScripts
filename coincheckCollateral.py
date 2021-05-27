@@ -61,9 +61,9 @@ if __name__ == '__main__':
     while True:
         try:
             ltp = int(ticker()['last'])
-            time.sleep(5)
+            time.sleep(3)
             balance_dict = balance()
-            collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp + float(balance_dict['jpy_reserved'])
+            collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp + float(balance_dict['jpy_reserved'] + ltp * float(balance_dict['btc_reserved']))
             data = [{"measurement": "coincheck_collateral", "fields": {
                 'coincheck_collateral': int(collateral)}}]
             client.write_points(data)

@@ -20,7 +20,7 @@ def get_signature(message):
     ).hexdigest()
 
 def get_nance():
-    return str(int(time.time())-80000)
+    return str(int(time.time()))
 
 def get_headers(nonce, signature):
     return {
@@ -65,7 +65,6 @@ if __name__ == '__main__':
             time.sleep(5)
             balance_dict = balance()
             collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp
-            print(collateral)
             data = [{"measurement": "coincheck_collateral", "fields": {
                 'coincheck_collateral': int(collateral)}}]
             client.write_points(data)

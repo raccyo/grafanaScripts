@@ -60,11 +60,10 @@ if __name__ == '__main__':
     client = InfluxDBClient(host='localhost', port=8086, database='bots')
     while True:
         try:
-            print(ticker())
             ltp = int(ticker()['last'])
             time.sleep(5)
             balance_dict = balance()
-            collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp
+            collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp + float(balance_dict['jpy_reserved'])
             data = [{"measurement": "coincheck_collateral", "fields": {
                 'coincheck_collateral': int(collateral)}}]
             client.write_points(data)

@@ -63,7 +63,11 @@ if __name__ == '__main__':
             ltp = int(ticker()['last'])
             time.sleep(3)
             balance_dict = balance()
-            collateral = float(balance_dict['jpy']) + float(balance_dict['btc']) * ltp + float(balance_dict['jpy_reserved'] + ltp * float(balance_dict['btc_reserved']))
+            jpy = float(balance_dict['jpy'])
+            btc = float(balance_dict['btc']) * ltp
+            jpy_reserved = float(balance_dict['jpy_reserved'])
+            btc_reserved = float(balance_dict['btc_reserved']) * ltp
+            collateral = jpy + btc + jpy_reserved + btc_reserved
             data = [{"measurement": "coincheck_collateral", "fields": {
                 'coincheck_collateral': int(collateral)}}]
             client.write_points(data)
